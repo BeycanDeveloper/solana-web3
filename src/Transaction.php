@@ -112,7 +112,7 @@ final class Transaction
      */
     public function verifyWithAmount(float $amount, ?string $tokenAddress = null) : string
     {
-        $result = $this->verifyWithLoop();
+        $result = $this->verify();
         if ($result == 'verified') {
             return $this->verifyAmount($amount, $tokenAddress);
         } else {

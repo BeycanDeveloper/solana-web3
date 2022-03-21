@@ -1,6 +1,6 @@
 {
     "name": "beycan/solana-web3",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Allows you to easily make requests to the Solana RPC API.",
     "type": "library",
     "license": "LGPL-3.0",
