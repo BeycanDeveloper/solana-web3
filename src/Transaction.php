@@ -94,12 +94,14 @@ final class Transaction
         if (is_null($tokenAddress) || $tokenAddress == 'SOL') {
             $beforeBalance = $this->data->meta->preBalances[1];
             $afterBalance = $this->data->meta->postBalances[1];
-            $diff = Utils::toDec(($afterBalance - $beforeBalance), 9);
+            $diff = Utils::toString(Utils::toDec(($afterBalance - $beforeBalance), 9), 9);
+            $amount = Utils::toString($amount, 9);
         } else {
             $decimals = $this->data->meta->preTokenBalances[1]->uiTokenAmount->decimals;
             $beforeBalance = $this->data->meta->preTokenBalances[1]->uiTokenAmount->uiAmount;
             $afterBalance = $this->data->meta->postTokenBalances[1]->uiTokenAmount->uiAmount;
-            $diff = ($afterBalance - $beforeBalance);
+            $diff = Utils::toString(($afterBalance - $beforeBalance), $decimals);
+            $amount = Utils::toString($amount, $decimals);
         }
         
         return $diff == $amount ? 'verified' : 'failed';
@@ -113,6 +115,7 @@ final class Transaction
     public function verifyWithAmount(float $amount, ?string $tokenAddress = null) : string
     {
         $result = $this->verify();
+
         if ($result == 'verified') {
             return $this->verifyAmount($amount, $tokenAddress);
         } else {
