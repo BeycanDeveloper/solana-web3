@@ -92,10 +92,9 @@ final class Transaction
     {
 
         if (is_null($tokenAddress) || $tokenAddress == 'SOL') {
-            $decimals = 9;
             $beforeBalance = $this->data->meta->preBalances[1];
             $afterBalance = $this->data->meta->postBalances[1];
-            $diff = Utils::toDec(($afterBalance - $beforeBalance), $decimals);
+            $diff = Utils::toDec(($afterBalance - $beforeBalance), 9);
         } else {
             $decimals = $this->data->meta->preTokenBalances[1]->uiTokenAmount->decimals;
             $beforeBalance = $this->data->meta->preTokenBalances[1]->uiTokenAmount->uiAmount;

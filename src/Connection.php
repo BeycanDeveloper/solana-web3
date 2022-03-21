@@ -6,20 +6,26 @@ use Exception;
 
 final class Connection
 {
-    private array $chainIds = [
+    private $chainIds = [
         "devnet" => 103,
         "testnet" => 102,
         "mainnet-beta" => 101,
     ];
     
-    private array $clusters = [
+    private static $clusterNames = [
+        "devnet" => "Devnet",
+        "testnet" => "Testnet",
+        "mainnet-beta" => "Mainnet",
+    ];
+
+    private $clusters = [
         "local" => 'http://localhost:8899',
         "devnet" => 'https://api.devnet.solana.com',
         "testnet" => 'https://api.testnet.solana.com',
         "mainnet-beta" => 'https://api.mainnet-beta.solana.com/',
     ];
 
-    private array $errorCodes = [
+    private $errorCodes = [
         "parse-error" => -32700,
         "invalid-request" => -32600,
         "method-not-found" => -32601,
@@ -27,11 +33,11 @@ final class Connection
         "internal-error" => -32603,
     ];
 
-    private array $allowedMethods = [
+    private $allowedMethods = [
         'getAccountInfo', 'getBalance', 'getBlock', 'getBlockHeight', 'getBlockProduction', 'getBlockCommitment', 'getBlocks', 'getBlocksWithLimit', 'getBlockTime', 'getClusterNodes', 'getEpochInfo', 'getEpochSchedule', 'getFeeForMessage', 'getFirstAvailableBlock', 'getGenesisHash', 'getHealth', 'getHighestSnapshotSlot', 'getIdentity', 'getInflationGovernor', 'getInflationRate', 'getInflationReward', 'getLargestAccounts', 'getLatestBlockhash', 'getLeaderSchedule', 'getMaxRetransmitSlot', 'getMaxShredInsertSlot', 'getMinimumBalanceForRentExemption', 'getMultipleAccounts', 'getProgramAccounts', 'getRecentPerformanceSamples', 'getSignaturesForAddress', 'getSignatureStatuses', 'getSlot', 'getSlotLeader', 'getSlotLeaders', 'getStakeActivation', 'getSupply', 'getTokenAccountBalance', 'getTokenAccountsByDelegate', 'getTokenAccountsByOwner', 'getTokenLargestAccounts', 'getTokenSupply', 'getTransaction', 'getTransactionCount', 'getVersion', 'getVoteAccounts', 'isBlockhashValid', 'minimumLedgerSlot', 'requestAirdrop', 'sendTransaction', 'simulateTransaction', 'accountSubscribe', 'accountUnsubscribe', 'logsSubscribe', 'logsUnsubscribe', 'programSubscribe', 'programUnsubscribe', 'signatureSubscribe', 'signatureUnsubscribe', 'slotSubscribe', 'slotUnsubscribe'
     ];
 
-    private string $endpoint;
+    private $endpoint;
 
     public static $connection = false;
 
@@ -157,5 +163,13 @@ final class Connection
     public static function getConnection() : Connection
     {
         return self::$connection;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getClusterName(string $cluster) : string
+    {
+        return self::$clusterNames[$cluster];
     }
 }
