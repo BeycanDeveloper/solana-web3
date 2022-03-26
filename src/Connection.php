@@ -41,6 +41,8 @@ final class Connection
 
     public static $connection = false;
 
+    private $randomKey;
+
     /**
      * @param string $cluster
      * @throws Exception

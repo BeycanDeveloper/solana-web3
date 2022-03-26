@@ -122,4 +122,12 @@ final class Transaction
             return $result;
         }
     }
+
+    /**
+     * @return string
+     */
+    public function getTransactionUrl() 
+    {
+        return "https://solscan.io/tx/" . $this->signature;
+    }
 }
