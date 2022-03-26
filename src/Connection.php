@@ -12,17 +12,25 @@ final class Connection
         "mainnet-beta" => 101,
     ];
     
-    private static $clusterNames = [
-        "devnet" => "Devnet",
-        "testnet" => "Testnet",
-        "mainnet-beta" => "Mainnet",
-    ];
-
     private $clusters = [
-        "local" => 'http://localhost:8899',
-        "devnet" => 'https://api.devnet.solana.com',
-        "testnet" => 'https://api.testnet.solana.com',
-        "mainnet-beta" => 'https://api.mainnet-beta.solana.com/',
+        "mainnet-beta" => [
+            "node" => "mainnet-beta",
+            "name" => "Mainnet",
+            "host" => "https://api.devnet.solana.com",
+            "explorer" => "https://solscan.io/"
+        ],
+        "testnet" => [
+            "node" => "testnet",
+            "name" => "Testnet",
+            "host" => "https://api.testnet.solana.com",
+            "explorer" => "https://solscan.io/"
+        ],
+        "devnet" => [
+            "node" => "devnet",
+            "name" => "Devnet",
+            "host" => "https://api.mainnet-beta.solana.com/",
+            "explorer" => "https://solscan.io/"
+        ]
     ];
 
     private $errorCodes = [
@@ -37,9 +45,9 @@ final class Connection
         'getAccountInfo', 'getBalance', 'getBlock', 'getBlockHeight', 'getBlockProduction', 'getBlockCommitment', 'getBlocks', 'getBlocksWithLimit', 'getBlockTime', 'getClusterNodes', 'getEpochInfo', 'getEpochSchedule', 'getFeeForMessage', 'getFirstAvailableBlock', 'getGenesisHash', 'getHealth', 'getHighestSnapshotSlot', 'getIdentity', 'getInflationGovernor', 'getInflationRate', 'getInflationReward', 'getLargestAccounts', 'getLatestBlockhash', 'getLeaderSchedule', 'getMaxRetransmitSlot', 'getMaxShredInsertSlot', 'getMinimumBalanceForRentExemption', 'getMultipleAccounts', 'getProgramAccounts', 'getRecentPerformanceSamples', 'getSignaturesForAddress', 'getSignatureStatuses', 'getSlot', 'getSlotLeader', 'getSlotLeaders', 'getStakeActivation', 'getSupply', 'getTokenAccountBalance', 'getTokenAccountsByDelegate', 'getTokenAccountsByOwner', 'getTokenLargestAccounts', 'getTokenSupply', 'getTransaction', 'getTransactionCount', 'getVersion', 'getVoteAccounts', 'isBlockhashValid', 'minimumLedgerSlot', 'requestAirdrop', 'sendTransaction', 'simulateTransaction', 'accountSubscribe', 'accountUnsubscribe', 'logsSubscribe', 'logsUnsubscribe', 'programSubscribe', 'programUnsubscribe', 'signatureSubscribe', 'signatureUnsubscribe', 'slotSubscribe', 'slotUnsubscribe'
     ];
 
-    private $endpoint;
+    public $cluster;
 
-    public static $connection = false;
+    public static $connection = null;
 
     private $randomKey;
 
@@ -53,7 +61,7 @@ final class Connection
             throw new Exception('You entered an invalid cluster!');
         }
 
-        $this->endpoint = $this->clusters[$cluster];
+        $this->cluster = (object) $this->clusters[$cluster];
 
         $this->randomKey = random_int(0, 99999999);
 
@@ -88,7 +96,7 @@ final class Connection
      */
     public function call(string $method, ...$params) : ?object
     {
-        $curl = curl_init($this->endpoint);
+        $curl = curl_init($this->cluster->host);
 
         $headers = [
             "Content-Type: application/json"
@@ -162,16 +170,8 @@ final class Connection
     /**
      * @return Connection
      */
-    public static function getConnection() : Connection
+    public static function getConnection() : ?Connection
     {
         return self::$connection;
-    }
-
-    /**
-     * @return string
-     */
-    public static function getClusterName(string $cluster) : string
-    {
-        return self::$clusterNames[$cluster];
     }
 }

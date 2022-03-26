@@ -126,8 +126,11 @@ final class Transaction
     /**
      * @return string
      */
-    public function getTransactionUrl() 
+    public function getUrl() 
     {
-        return "https://solscan.io/tx/" . $this->signature;
+        $node = $this->connection->cluster->node;
+        $url  = $this->connection->cluster->explorer . "tx/" . $this->signature;
+        $url .= $node != 'mainnet-beta' ? '?cluster=' . $node : '';
+        return $url;
     }
 }
