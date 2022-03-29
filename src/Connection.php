@@ -16,7 +16,7 @@ final class Connection
         "mainnet-beta" => [
             "node" => "mainnet-beta",
             "name" => "Mainnet",
-            "host" => "https://api.devnet.solana.com",
+            "host" => "https://api.mainnet-beta.solana.com/",
             "explorer" => "https://solscan.io/"
         ],
         "testnet" => [
@@ -28,7 +28,7 @@ final class Connection
         "devnet" => [
             "node" => "devnet",
             "name" => "Devnet",
-            "host" => "https://api.mainnet-beta.solana.com/",
+            "host" => "https://api.devnet.solana.com",
             "explorer" => "https://solscan.io/"
         ]
     ];
